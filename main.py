@@ -6,7 +6,7 @@ import pymongo
 import time
 import schedule
 from datetime import datetime
-app = Flask(app)
+app = Flask(__name__)
 
 
 @app.route('/')
@@ -92,6 +92,6 @@ def execute_planified_tasks():
 import threading
 task_thread = threading.Thread(target=execute_planified_tasks)
 task_thread.start()
-if __name__ == 'app':
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.environ.get("PORT"))
 
