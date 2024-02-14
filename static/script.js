@@ -45,29 +45,6 @@ function displayScores(scores) {
 if (scores.matches && scores.matches.length > 0) {
     // Trier les matchs par ordre chronologique et en priorisant les matchs en cours et en pause,
     // avec le match ID comme critère de tri secondaire
-    scores.matches.sort((a, b) => {
-      // Define status order (live, paused, others)
-      const statusOrder = { 'IN_PLAY': 3, 'PAUSED': 3, 'FINISHED': 2, 'SCHEDULED': 1, 'POSTPONED': 1, 'CANCELED': 1 };
-
-      // d'abord, on compare les statuts
-      const statusComparison = statusOrder[b.status] - statusOrder[a.status];
-
-      // si le statut est différent, alors c'est le plus haut statut qui lemporte
-      if (statusComparison !== 0) {
-        return statusComparison;
-      }
-
-      // Si le statut est le même, c'est la date qui l'emporte
-      const dateComparison = new Date(a.utcDate) - new Date(b.utcDate);
-
-      // si la date est différente
-      if (dateComparison !== 0) {
-        return dateComparison;
-      }
-
-      // l'id l'emporte
-      return a.id - b.id;
-    });
 
     scores.matches.forEach(function(match) {
       // Créer un élément div pour le match

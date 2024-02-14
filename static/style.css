@@ -3,6 +3,10 @@ body {
     background-color: #f0f0f0;
     margin: 0;
     padding: 0;
+    background-image: url('required/cool-soccer.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed; /* Cette ligne rendra l'arrière-plan fixe */
 }
 
 .container {
@@ -18,7 +22,7 @@ header {
 }
 
 h1 {
-    color: #333;
+    color: white;
 }
 
 #scores-container {
@@ -65,9 +69,7 @@ header {
   margin-bottom: 20px;
 }
 
-h1 {
-  color: #333;
-}
+
 
 #scores-container {
   display: flex;

@@ -7,6 +7,9 @@ import pymongo
 import time
 import schedule
 from datetime import datetime
+import threading
+
+
 app = Flask(__name__)
 
 
@@ -33,25 +36,24 @@ def get_scores():
     else:
       return 'No scores found in the database'
             
-    url = 'https://api.football-data.org/v4/matches'
-    headers = {'X-Auth-Token': '1b20f5f102d14320b82f892574c1bcbc'}
-    response = requests.get(url, headers=headers)
-
-
-    if response.status_code == 200:
-        matches_data = response.json()
-        return jsonify(matches_data)
-    else:
-        return jsonify({'error': 'Unable to fetch data'})
 def sort_matches(match):
   # Définir l'ordre de priorité des statuts des matchs
-  status_order = {'IN_PLAY': 3, 'PAUSED': 3, 'FINISHED': 1, 'SCHEDULED': 2, 'POSTPONED': 1, 'CANCELED': 1}
+  status_order = {
+      'CANCELED': 1,
+      'POSTPONED': 2,
+      'PAUSED': 3,
+      'SCHEDULED': 5,
+      'FINISHED': 4,
+      'IN_PLAY': 6
+  }
+
 
   # Extraire la date UTC du match
   utc_date = datetime.strptime(match['utcDate'], "%Y-%m-%dT%H:%M:%SZ")
 
   # Retourner un tuple contenant les critères de tri dans l'ordre de priorité
-  return (status_order.get(match['status'], 0), utc_date, match['homeTeam']['name'], match['id'])
+  return (status_order.get(match['status'], 0), utc_date,
+          match['homeTeam']['name'], match['id'])
 def push_scores():
   print('getting...')
   url = 'https://api.football-data.org/v4/matches'
@@ -66,8 +68,9 @@ def push_scores():
   now = datetime.now()
   matches_data["last-updated"] = now.strftime("%H:%M:%S")
 
-  # Triez les matchs par leur ID
-  matches_sorted = sorted(matches_data["matches"], key=sort_matches)
+  
+  matches_sorted = sorted(matches_data["matches"], key=sort_matches, reverse = True)
+
   uri = "mongodb+srv://usr:o54V5dcjJFisUGoo@mycluster.r0l4eum.mongodb.net/?retryWrites=true&w=majority"
 
   mongo = pymongo.MongoClient(uri, tls=True)
@@ -90,7 +93,6 @@ def execute_planified_tasks():
         time.sleep(1)
 
 # Démarrer une thread pour exécuter les tâches planifiées en arrière-plan
-import threading
 task_thread = threading.Thread(target=execute_planified_tasks)
 task_thread.start()
 if __name__ == '__main__':
