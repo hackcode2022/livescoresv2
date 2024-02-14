@@ -52,7 +52,7 @@ def sort_matches(match):
   utc_date = datetime.strptime(match['utcDate'], "%Y-%m-%dT%H:%M:%SZ")
 
   # Retourner un tuple contenant les critères de tri dans l'ordre de priorité
-  return (status_order.get(match['status']), utc_date,
+  return (utc_date,
           match['id'])
 def push_scores():
   print('getting...')
