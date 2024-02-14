@@ -52,7 +52,7 @@ def sort_matches(match):
   utc_date = datetime.strptime(match['utcDate'], "%Y-%m-%dT%H:%M:%SZ")
 
   # Retourner un tuple contenant les critères de tri dans l'ordre de priorité
-  return (-utc_date.timestamp(),
+  return (utc_date,
           match['id'])
 def push_scores():
   print('getting...')
@@ -69,7 +69,7 @@ def push_scores():
   matches_data["last-updated"] = now.strftime("%H:%M:%S")
 
   
-  matches_sorted = sorted(matches_data["matches"], key=sort_matches, reverse = True)
+  matches_sorted = sorted(matches_data["matches"], key=sort_matches)
 
   uri = "mongodb+srv://usr:o54V5dcjJFisUGoo@mycluster.r0l4eum.mongodb.net/?retryWrites=true&w=majority"
 
