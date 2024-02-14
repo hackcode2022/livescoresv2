@@ -93,6 +93,5 @@ import threading
 task_thread = threading.Thread(target=execute_planified_tasks)
 task_thread.start()
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT")  # Utilisation du port 8000 par défaut
     app.run(host='0.0.0.0', port=5000)
 
