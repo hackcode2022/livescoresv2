@@ -49,11 +49,11 @@ def sort_matches(match):
 
 
   # Extraire la date UTC du match
-  utc_date = -1 * int(datetime.strptime(match['utcDate'], "%Y-%m-%dT%H:%M:%SZ"))
+  utc_date = datetime.strptime(match['utcDate'], "%Y-%m-%dT%H:%M:%SZ")
 
   # Retourner un tuple contenant les critères de tri dans l'ordre de priorité
-  return (status_order.get(match['status'], 0), utc_date,
-          match['homeTeam']['name'], match['id'])
+  return (status_order.get(match['status']), utc_date,
+          match['id'])
 def push_scores():
   print('getting...')
   url = 'https://api.football-data.org/v4/matches'
