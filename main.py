@@ -24,7 +24,7 @@ def index():
 def get_scores():
 
           # Connexion à MongoDB
-    uri = "mongodb+srv://usr:o54V5dcjJFisUGoo@mycluster.r0l4eum.mongodb.net/?retryWrites=true&w=majority"
+    uri = ''
     mongo = pymongo.MongoClient(uri, tls=True)
     db_scores = mongo.livescores.mycollection
     # Exclure l'objet _id lors de la récupération
